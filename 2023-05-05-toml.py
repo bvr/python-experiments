@@ -1,6 +1,7 @@
 # from https://www.pythonforbeginners.com/basics/working-with-toml-files-in-python
 
 import toml
+from rich import print
 
 data = {
     "employee": {
@@ -22,3 +23,6 @@ data = {
 
 with open("employee.toml","w") as file:
     toml.dump(data,file)
+
+loaded = toml.load("employee.toml")
+print(data)
