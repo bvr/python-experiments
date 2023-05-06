@@ -10,6 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
+            "args": [ "c:\\Dev\\ispell-czech\\ispell_czech\\cat\\hlavni.cat" ],
             "justMyCode": true
         }
     ]
