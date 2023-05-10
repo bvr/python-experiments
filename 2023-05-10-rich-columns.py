@@ -1,3 +1,5 @@
+# from https://github.com/Textualize/rich/blob/master/examples/columns.py
+
 """
 This example shows how to display content in columns.
 
