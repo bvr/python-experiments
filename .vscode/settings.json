@@ -1,5 +1,10 @@
 {
     "cSpell.words": [
+        "Alloc",
+        "DDESHARE",
+        "getpixel",
+        "GMEM",
+        "pygame",
         "renderables",
         "unidecode"
     ]
