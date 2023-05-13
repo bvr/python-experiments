@@ -6,6 +6,7 @@
         "GMEM",
         "pygame",
         "renderables",
-        "unidecode"
+        "unidecode",
+        "wordlist"
     ]
 }
