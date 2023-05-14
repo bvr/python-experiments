@@ -16,8 +16,9 @@ def main():
 
         show_guess(guess, word)
         if guess == word:
-            print(f'wordS match')
+            print(f'That is the word')
             break
+        
     # Post-process
     else:
         game_over(word)
@@ -52,7 +53,7 @@ def show_guess(guess, word):
     print("Wrong letters:", ", ".join(sorted(wrong_letters)))
 
 def game_over(word):
-    print(f"The word was {word}")
+    print(f"You failed. The word was {word}")
 
 if __name__ == "__main__":
     main()
