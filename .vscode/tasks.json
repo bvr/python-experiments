@@ -7,6 +7,19 @@
             "label": "doctest",
             "type": "shell",
             "command": "python -m doctest -v ${file}"
+        },
+        {
+            "label": "New Script",
+            "type": "shell",
+            "command": "create_script.bat ${input:name}",
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "name",
+            "type": "promptString",
+            "description": "Specify name of the newly created file"
         }
     ]
 }

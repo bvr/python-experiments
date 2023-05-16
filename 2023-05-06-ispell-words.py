@@ -19,10 +19,12 @@ def ispell_entries(file):
 
 def longer_noun(entry):
     word, flags = entry
-    if not re.search(r'[HQXZPI]', flags):
+    if not re.search(r'[HP]', flags):
         return False
     return len(word) >= 8
 
+
+# works on files from https://github.com/tvondra/ispell_czech
 input = fileinput.input(encoding="utf-8")
-for entry in islice(filter(longer_noun, ispell_entries(input)), 200):
+for entry in filter(longer_noun, ispell_entries(input)):
     print(entry[0])
