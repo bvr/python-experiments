@@ -25,6 +25,7 @@ def longer_noun(entry):
 
 
 # works on files from https://github.com/tvondra/ispell_czech
+# if redirection into file is needed, the "set PYTHONIOENCODING=UTF-8" needs to be done
 input = fileinput.input(encoding="utf-8")
 for entry in filter(longer_noun, ispell_entries(input)):
     print(entry[0])
