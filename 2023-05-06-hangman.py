@@ -20,7 +20,7 @@ def play(word):
         show_entry(to_guess, guess_num)
         guess = upper_ascii(input("Guess letter: "))
         to_guess = [(c, visible or guess == upper_ascii(c)) for c,visible in to_guess]
-    
+        len([c for c,visible in to_guess if visible == False])
 
 def main():
     words = get_words('hangman-words.txt')
