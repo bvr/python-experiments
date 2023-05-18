@@ -19,8 +19,12 @@ def play(word):
         print(to_guess)
         show_entry(to_guess, guess_num)
         guess = upper_ascii(input("Guess letter: "))
+        
+        visible_before = sum(visible for _,visible in to_guess)
         to_guess = [(c, visible or guess == upper_ascii(c)) for c,visible in to_guess]
-        len([c for c,visible in to_guess if visible == False])
+        visible_after = sum(visible for _,visible in to_guess)
+        print("changed: ", visible_before, visible_after)
+        
 
 def main():
     words = get_words('hangman-words.txt')
