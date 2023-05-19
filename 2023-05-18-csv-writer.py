@@ -23,7 +23,7 @@ def write_csv(data, file):
         writer.writerow([row['name'], row['short_name']])
 
 @click.command()
-@click.option('-o', '--output', type=click.File('w', lazy=False), default='-')
+@click.option('-o', '--output', type=click.File('w', lazy=False), default='-', help='Write to file instead of stdout.')
 def main(output):
     """Retrieve the names of the Discordian seasons."""
     data = get_data()
