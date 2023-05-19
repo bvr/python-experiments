@@ -16,18 +16,20 @@ def get_data():
         {"name": "The Aftermath", "short_name": "Afm"},
     ]
 
-def write_csv(data):
-    with open("calendar.csv", 'w', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerow(['name', 'short_name'])
-        for row in data:
-            writer.writerow([row['name'], row['short_name']])
+def write_csv(data, file):
+    writer = csv.writer(file)
+    writer.writerow(['name', 'short_name'])
+    for row in data:
+        writer.writerow([row['name'], row['short_name']])
 
 @click.command()
-def main():
-    """Retrieve the names of the Discordian seasons to calendar.csv."""
+@click.option('-o', '--output', type=click.File('w', lazy=False), required=True)
+def main(output):
+    """Retrieve the names of the Discordian seasons."""
     data = get_data()
-    write_csv(data)
+    # click.File doesn't have a newline argument
+    output.reconfigure(newline='')
+    write_csv(data, output)
 
 if __name__ == '__main__':
     main()
