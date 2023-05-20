@@ -25,13 +25,13 @@ def longer_noun(entry):
     return 5 <= len(word) <= 8
 
 
-# works on files from https://github.com/tvondra/ispell_czech
-
 @click.command()
 @click.argument("input", type=click.File("r",encoding="utf-8"))
 @click.option('-o', '--output', type=click.File('w', lazy=False, encoding="utf-8"), default='-', help='Write to file instead of stdout.')
 def main(input, output):
-    """Extracts noun words of specified length from ispell dictionary."""
+    """Extracts noun words of specified length from ispell dictionary.
+    Files this was designed to work with are from https://github.com/tvondra/ispell_czech
+    """
     for entry in filter(longer_noun, ispell_entries(input)):
         output.write(entry[0] + "\n")
 
