@@ -31,6 +31,7 @@ def longer_noun(entry):
 @click.argument("input", type=click.File("r",encoding="utf-8"))
 @click.option('-o', '--output', type=click.File('w', lazy=False, encoding="utf-8"), default='-', help='Write to file instead of stdout.')
 def main(input, output):
+    """Extracts noun words of specified length from ispell dictionary."""
     for entry in filter(longer_noun, ispell_entries(input)):
         output.write(entry[0] + "\n")
 
