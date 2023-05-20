@@ -2,6 +2,7 @@
 import fileinput
 from itertools import islice
 import re
+import click
 
 def ispell_entries(file):
     for line in file:
@@ -21,11 +22,17 @@ def longer_noun(entry):
     word, flags = entry
     if not re.search(r'[HP]', flags):
         return False
-    return len(word) >= 8
+    return 5 <= len(word) <= 8
 
 
 # works on files from https://github.com/tvondra/ispell_czech
-# if redirection into file is needed, the "set PYTHONIOENCODING=UTF-8" needs to be done
-input = fileinput.input(encoding="utf-8")
-for entry in filter(longer_noun, ispell_entries(input)):
-    print(entry[0])
+
+@click.command()
+@click.argument("input", type=click.File("r",encoding="utf-8"))
+@click.option('-o', '--output', type=click.File('w', lazy=False, encoding="utf-8"), default='-', help='Write to file instead of stdout.')
+def main(input, output):
+    for entry in filter(longer_noun, ispell_entries(input)):
+        output.write(entry[0] + "\n")
+
+if __name__ == '__main__':
+    main()
