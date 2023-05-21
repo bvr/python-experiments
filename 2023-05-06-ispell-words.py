@@ -26,12 +26,14 @@ def create_longer_noun_filter(pattern, min_len, max_len):
 
 @click.command()
 @click.argument("input", type=click.File("r",encoding="utf-8"))
-@click.option('-o', '--output', type=click.File('w', lazy=False, encoding="utf-8"), default='-', help='Write to file instead of stdout.')
-@click.option('--min-len', type=click.INT, default=5, help='Minimum characters for the word')
-@click.option('--max-len', type=click.INT, default=8, help='Maximum characters for the word')
-@click.option('--pattern', default='HP', help='Pattern for selected words')
+@click.option('-o', '--output', type=click.File('w', lazy=False, encoding="utf-8"), default='-', 
+                                                         help='Write to file instead of stdout.')
+@click.option('--min-len', default=5, show_default=True, help='Minimum characters for the word')
+@click.option('--max-len', default=8, show_default=True, help='Maximum characters for the word')
+@click.option('--pattern', default='HP', show_default=True, help='Pattern for selected words')
 def main(input, output, min_len, max_len, pattern):
-    """Extracts noun words of specified length from ispell dictionary.
+    """
+    Extracts noun words of specified length from ispell dictionary.
     Files this was designed to work with are from https://github.com/tvondra/ispell_czech
     """
     for entry in filter(create_longer_noun_filter(pattern, min_len, max_len), ispell_entries(input)):
