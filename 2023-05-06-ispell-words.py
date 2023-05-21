@@ -1,6 +1,4 @@
 
-import fileinput
-from itertools import islice
 import re
 import click
 
