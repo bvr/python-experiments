@@ -13,9 +13,8 @@ def upper_ascii(s):
 
 def show_entry(console, guess, num):
     console.clear()
-    console.print(Panel('HANGMAN', expand=True))
+    console.print(Panel(str(num) + ': ' + ' '.join([c if visible else '-'  for c,visible in guess]), expand=False, title='HANGMAN'))
     # TODO: Draw a hangman picture
-    console.print(str(num) + ': ' + ' '.join([c if visible else '-'  for c,visible in guess]))
     console.print()
 
 def play(console, word):
@@ -41,10 +40,11 @@ def play(console, word):
             break
 
         if visible_after == visible_before:
+            # TODO: prevent taking a mistake twice
             tries.append(guess)
             allowed_fails -= 1
     else:
-        word = ' '.join([c for c,_ in guess])
+        word = ' '.join([c for c,_ in to_guess])
         print(f'You lost, the word was {word}')
 
 def main():
@@ -53,7 +53,7 @@ def main():
 
     while True:
         play(console, random.choice(words))
-        if input("Play Again? (Y/N) ").upper() != "Y":
+        if input("Play Again? (Y/N) ").upper() == "N":
             break
 
 if __name__ == "__main__":
