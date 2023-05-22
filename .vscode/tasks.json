@@ -12,7 +12,10 @@
             "label": "New Script",
             "type": "shell",
             "command": "create_script.bat ${input:name}",
-            "problemMatcher": []
+            "problemMatcher": [],
+            "presentation": {
+                "close": true
+            }
         }
     ],
     "inputs": [
