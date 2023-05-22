@@ -1,6 +1,8 @@
 
 import unicodedata
 import random
+from rich.console import Console
+from rich.panel import Panel
 
 def get_words(input_file):
     with open(input_file, encoding='utf-8') as file:
@@ -9,33 +11,50 @@ def get_words(input_file):
 def upper_ascii(s):
     return unicodedata.normalize('NFKD', s.upper()).encode('ASCII', 'ignore')
 
-def show_entry(guess, num):
-    print(str(num) + ': ' + ' '.join([c if visible else '-'  for c,visible in guess]))
+def show_entry(console, guess, num):
+    console.clear()
+    console.print(Panel('HANGMAN', expand=True))
+    # TODO: Draw a hangman picture
+    console.print(str(num) + ': ' + ' '.join([c if visible else '-'  for c,visible in guess]))
+    console.print()
 
-def play(word):
+def play(console, word):
     to_guess = [(c,False) for c in word.upper()]
+    tries = []
     allowed_fails = 7
     while allowed_fails > 0:
-        print(to_guess)
-        show_entry(to_guess, allowed_fails)
-        guess = upper_ascii(input("Guess letter: "))
+        show_entry(console, to_guess, allowed_fails)
+        if len(tries) > 0:
+            console.print('Already tried: ' + ' '.join(tries))
+        guess = console.input(f'Guess letter (? = help): ')
         
+        if guess == '?':
+            guess = random.choice([c for c, visible in to_guess if visible == False])
+
         visible_before = sum(visible for _,visible in to_guess)
-        to_guess = [(c, visible or guess == upper_ascii(c)) for c,visible in to_guess]
+        to_guess = [(c, visible or upper_ascii(guess) == upper_ascii(c)) for c,visible in to_guess]
         visible_after = sum(visible for _,visible in to_guess)
 
         if visible_after == len(to_guess):
+            show_entry(console, to_guess, allowed_fails)
             print('You won')
             break
 
         if visible_after == visible_before:
-            allowed_fails -= 1        
+            tries.append(guess)
+            allowed_fails -= 1
+    else:
+        word = ' '.join([c for c,_ in guess])
+        print(f'You lost, the word was {word}')
 
 def main():
     words = get_words('hangman-words.txt')
-    play(random.choice(words))
-    while input("Play Again? (Y/N) ").upper() == "Y":
-        play(random.choice(words))
+    console = Console()
+
+    while True:
+        play(console, random.choice(words))
+        if input("Play Again? (Y/N) ").upper() != "Y":
+            break
 
 if __name__ == "__main__":
     main()
