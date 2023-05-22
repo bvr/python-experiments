@@ -12,19 +12,24 @@ def upper_ascii(s):
 def show_entry(guess, num):
     print(str(num) + ': ' + ' '.join([c if visible else '-'  for c,visible in guess]))
 
-
 def play(word):
     to_guess = [(c,False) for c in word.upper()]
-    for guess_num in range(1, 7):
+    allowed_fails = 7
+    while allowed_fails > 0:
         print(to_guess)
-        show_entry(to_guess, guess_num)
+        show_entry(to_guess, allowed_fails)
         guess = upper_ascii(input("Guess letter: "))
         
         visible_before = sum(visible for _,visible in to_guess)
         to_guess = [(c, visible or guess == upper_ascii(c)) for c,visible in to_guess]
         visible_after = sum(visible for _,visible in to_guess)
-        print("changed: ", visible_before, visible_after)
-        
+
+        if visible_after == len(to_guess):
+            print('You won')
+            break
+
+        if visible_after == visible_before:
+            allowed_fails -= 1        
 
 def main():
     words = get_words('hangman-words.txt')
