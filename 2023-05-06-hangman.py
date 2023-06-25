@@ -24,7 +24,7 @@ def show_entry(console, guess, remaining_attempts):
 def play(console, word):
     to_guess = [(c,False) for c in word.upper()]
     tries = []
-    remaining_attempts = 6
+    remaining_attempts = 7
     while remaining_attempts > 0:
         show_entry(console, to_guess, remaining_attempts)
         if len(tries) > 0:
@@ -39,7 +39,7 @@ def play(console, word):
         visible_after = sum(visible for _,visible in to_guess)
 
         if visible_after == len(to_guess):
-            show_entry(console, to_guess, allowed_fails)
+            show_entry(console, to_guess, remaining_attempts)
             print('You won')
             break
 
@@ -86,6 +86,21 @@ def get_hangman_picture(remaining_attempts):
    ├┤      ┌─┼─┐
    ├┤      │ │ │
    ├┤        │
+   ├┤       ┌┘
+   ├┤       │
+   ├┤      ─┘
+   ├┤
+═══╧╧═════════════
+""",
+"""
+    ┌┬┬┬┬┬┬┬┐
+   ┌┼┼┴┴┴┴┴┴┴┐
+   ├┼┘       │
+   ├┤       ╭┴╮
+   ├┤       ╰┬╯
+   ├┤      ┌─┼─┐
+   ├┤      │ │ │
+   ├┤        │
    ├┤
    ├┤
    ├┤
@@ -98,7 +113,7 @@ def get_hangman_picture(remaining_attempts):
    ├┼┘       │
    ├┤       ╭┴╮
    ├┤       ╰┬╯
-   ├┤      ┌─┼
+   ├┤      ┌─┘
    ├┤      │ 
    ├┤
    ├┤
