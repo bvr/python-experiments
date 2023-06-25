@@ -11,22 +11,26 @@ def get_words(input_file):
 def upper_ascii(s):
     return unicodedata.normalize('NFKD', s.upper()).encode('ASCII', 'ignore')
 
-def show_entry(console, guess, num):
+def show_entry(console, guess, remaining_attempts):
     console.clear()
-    console.print(Panel(str(num) + ': ' + ' '.join([c if visible else '-'  for c,visible in guess]), expand=False, title='HANGMAN'))
-    # TODO: Draw a hangman picture
+    console.print(Panel(
+        f'Remaining {str(remaining_attempts)} attempts\n'
+      + get_hangman_picture(remaining_attempts) + '\n'
+      + 'Word to guess:\n'
+      + ' '.join([c if visible else '-'  for c,visible in guess]
+    ), expand=False, title='HANGMAN'))
     console.print()
 
 def play(console, word):
     to_guess = [(c,False) for c in word.upper()]
     tries = []
-    allowed_fails = 7
-    while allowed_fails > 0:
-        show_entry(console, to_guess, allowed_fails)
+    remaining_attempts = 6
+    while remaining_attempts > 0:
+        show_entry(console, to_guess, remaining_attempts)
         if len(tries) > 0:
             console.print('Already tried: ' + ' '.join(tries))
         guess = console.input(f'Guess letter (? = help): ')
-        
+
         if guess == '?':
             guess = random.choice([c for c, visible in to_guess if visible == False])
 
@@ -40,10 +44,10 @@ def play(console, word):
             break
 
         if visible_after == visible_before:
-            # TODO: prevent taking a mistake twice
             tries.append(guess)
-            allowed_fails -= 1
+            remaining_attempts -= 1
     else:
+        show_entry(console, to_guess, remaining_attempts)
         word = ' '.join([c for c,_ in to_guess])
         print(f'You lost, the word was {word}')
 
@@ -55,6 +59,115 @@ def main():
         play(console, random.choice(words))
         if input("Play Again? (Y/N) ").upper() == "N":
             break
+
+def get_hangman_picture(remaining_attempts):
+    return [
+"""
+    ┌┬┬┬┬┬┬┬┐
+   ┌┼┼┴┴┴┴┴┴┴┐
+   ├┼┘       │
+   ├┤       ╭┴╮
+   ├┤       ╰┬╯
+   ├┤      ┌─┼─┐
+   ├┤      │ │ │
+   ├┤        │
+   ├┤       ┌┴┐
+   ├┤       │ │
+   ├┤      ─┘ └─
+   ├┤
+═══╧╧═════════════
+""",
+"""
+    ┌┬┬┬┬┬┬┬┐
+   ┌┼┼┴┴┴┴┴┴┴┐
+   ├┼┘       │
+   ├┤       ╭┴╮
+   ├┤       ╰┬╯
+   ├┤      ┌─┼─┐
+   ├┤      │ │ │
+   ├┤        │
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+═══╧╧═════════════
+""",
+"""
+    ┌┬┬┬┬┬┬┬┐
+   ┌┼┼┴┴┴┴┴┴┴┐
+   ├┼┘       │
+   ├┤       ╭┴╮
+   ├┤       ╰┬╯
+   ├┤      ┌─┼
+   ├┤      │ 
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+═══╧╧═════════════
+""",
+"""
+    ┌┬┬┬┬┬┬┬┐
+   ┌┼┼┴┴┴┴┴┴┴┐
+   ├┼┘       │
+   ├┤       ╭┴╮
+   ├┤       ╰─╯
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+═══╧╧═════════════
+""",
+"""
+    ┌┬┬┬┬┬┬┬┐
+   ┌┼┼┴┴┴┴┴┴┘
+   ├┼┘
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+═══╧╧═════════════
+""",
+"""
+
+   ┌┐
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+   ├┤
+═══╧╧═════════════
+""",
+"""
+
+
+
+
+
+
+
+
+
+
+
+
+══════════════════
+""",
+    ][remaining_attempts]
 
 if __name__ == "__main__":
     main()
